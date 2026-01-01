@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem e-BIG IPGKDA</title>
+    <title>Sistem MPU3212 | Panel Penilaian</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -12,14 +12,14 @@
         body { font-family: 'Poppins', sans-serif; background: url('https://i.imgur.com/q4WcRZJ.jpeg') no-repeat center center fixed; background-size: cover; }
         .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .hidden { display: none !important; }
-        .tab-btn-active { background-color: #4f46e5; color: white; }
-        .tab-btn-inactive { background-color: #f3f4f6; color: #6b7280; }
-        .input-mark { text-align: center; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; width: 100%; font-weight: bold; }
+        .tab-active { background-color: #10b981; color: white; border-color: #10b981; }
+        .tab-inactive { background-color: white; color: #6b7280; border-color: #e5e7eb; }
+        .input-mark { text-align: center; border: 1px solid #d1d5db; border-radius: 0.5rem; padding: 0.5rem; width: 100%; font-weight: bold; }
         .loader { border-top-color: #4f46e5; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen p-4 flex items-center justify-center">
 
     <div id="loader" class="fixed inset-0 bg-black/50 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-md">
         <div class="loader w-12 h-12 border-4 border-gray-200 rounded-full mb-4"></div>
@@ -28,109 +28,151 @@
 
     <div id="view-login" class="glass w-full max-w-md p-8">
         <div class="text-center mb-6">
-            <h1 class="text-2xl font-black text-indigo-900">Sistem e-BIG v2</h1>
+            <h1 class="text-2xl font-black text-indigo-900 uppercase">Sistem e-BIG</h1>
             <p class="text-xs font-bold text-gray-400">PENGURUSAN BINA INSAN GURU</p>
         </div>
         <div class="flex gap-1 mb-6">
             <button onclick="switchLogin('student')" id="tab-student" class="flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600">PELAJAR</button>
-            <button onclick="switchLogin('lecturer')" id="tab-lecturer" class="flex-1 py-2 font-bold text-xs text-gray-400">PENSYARAH</button>
+            <button onclick="switchLogin('lecturer')" id="tab-lecturer" class="flex-1 py-2 font-bold text-xs text-gray-400 border-b-4 border-transparent">PENSYARAH</button>
         </div>
         <form id="form-student" onsubmit="loginStudent(event)" class="space-y-4">
             <input type="text" id="login-ic" class="w-full p-4 rounded-xl border text-center font-black tracking-widest text-lg" placeholder="NO. KAD PENGENALAN" required>
-            <button class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">MASUK KE PANEL</button>
+            <button class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">MASUK</button>
         </form>
         <form id="form-lecturer" onsubmit="loginLecturer(event)" class="space-y-4 hidden">
             <input type="email" id="login-email" class="w-full p-3 border rounded-lg" placeholder="Emel">
             <input type="password" id="login-pass" class="w-full p-3 border rounded-lg" placeholder="Kata Laluan">
-            <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">LOG MASUK PENSYARAH</button>
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold uppercase">Log Masuk Penilai</button>
         </form>
     </div>
 
     <div id="view-student" class="glass w-full max-w-4xl p-6 hidden">
         <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <div>
-                <h2 id="std-name" class="text-xl font-bold text-gray-800 uppercase">Nama Pelajar</h2>
-                <p id="std-id-info" class="text-[10px] font-bold text-gray-400">ID: - | KELAS: -</p>
-            </div>
-            <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-[10px]">KELUAR</button>
+            <h2 id="std-name" class="text-xl font-bold text-gray-800 uppercase">-</h2>
+            <button onclick="location.reload()" class="text-red-600 font-bold text-xs">KELUAR</button>
         </div>
-
         <div class="flex gap-2 mb-6">
-            <button onclick="switchStudentTab('profile')" id="btn-tab-profile" class="flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active">1. PROFIL & KUMPULAN (SEBELUM)</button>
-            <button onclick="switchStudentTab('peer')" id="btn-tab-peer" class="flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive">2. PENILAIAN RAKAN (SELEPAS)</button>
+            <button onclick="switchStudentTab('profile')" id="btn-tab-profile" class="flex-1 py-3 rounded-xl font-bold text-xs bg-indigo-600 text-white">1. PROFIL & KUMPULAN</button>
+            <button onclick="switchStudentTab('peer')" id="btn-tab-peer" class="flex-1 py-3 rounded-xl font-bold text-xs bg-gray-100 text-gray-500">2. PENILAIAN RAKAN</button>
         </div>
-
         <div id="pane-profile" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="flex flex-col items-center">
+             <div class="flex flex-col items-center">
                 <div class="w-44 h-56 bg-gray-100 rounded-2xl overflow-hidden border-4 border-white shadow-xl relative group">
                     <img id="std-img" class="w-full h-full object-cover hidden">
                     <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="handleFiles(this.files)">
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-300 font-bold text-[10px] text-center p-4">KLIK UNTUK MUAT NAIK GAMBAR</div>
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-300 font-bold text-[8px] text-center p-4">KLIK UNTUK MUAT NAIK GAMBAR</div>
                 </div>
             </div>
             <div class="md:col-span-2 space-y-4">
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-[10px] font-bold text-indigo-800">SIRI BIG</label><input type="number" id="std-siri" class="w-full p-2 border rounded font-bold" placeholder="Contoh: 1"></div>
-                    <div><label class="text-[10px] font-bold text-indigo-800">KUMPULAN BIG</label><input type="number" id="std-kumpulan" class="w-full p-2 border rounded font-bold" placeholder="Contoh: 1"></div>
+                    <div><label class="text-[10px] font-bold">SIRI BIG</label><input type="number" id="std-siri" class="w-full p-2 border rounded font-bold"></div>
+                    <div><label class="text-[10px] font-bold">KUMPULAN BIG</label><input type="number" id="std-kumpulan" class="w-full p-2 border rounded font-bold"></div>
                 </div>
                 <div class="p-4 bg-indigo-50 rounded-xl space-y-2">
-                    <h3 class="font-bold text-indigo-900 text-xs">MAKLUMAT KESIHATAN</h3>
+                    <h3 class="font-bold text-xs">KESIHATAN</h3>
                     <input type="text" id="std-alahan" class="w-full p-2 border rounded text-xs" placeholder="Alahan">
-                    <input type="text" id="std-ubat" class="w-full p-2 border rounded text-xs" placeholder="Ubat-ubatan">
+                    <input type="text" id="std-ubat" class="w-full p-2 border rounded text-xs" placeholder="Ubat">
                     <input type="text" id="std-tel" class="w-full p-2 border rounded text-xs" placeholder="No. Telefon Waris">
                 </div>
-                <button onclick="updateStudentData()" class="w-full bg-indigo-900 text-white py-3 rounded-xl font-bold text-sm shadow-lg">SIMPAN MAKLUMAT SEBELUM AKTIVITI</button>
+                <button onclick="updateStudentData()" class="w-full bg-indigo-900 text-white py-3 rounded-xl font-bold text-xs">SIMPAN MAKLUMAT</button>
             </div>
         </div>
-
-        <div id="pane-peer" class="hidden space-y-6">
-            <div id="peer-done-msg" class="hidden p-8 text-center bg-green-50 text-green-700 rounded-2xl border border-green-200">
-                <i class="fas fa-check-circle text-4xl mb-2"></i>
-                <p class="font-bold uppercase">Penilaian anda telah direkodkan. Terima kasih.</p>
-            </div>
+        <div id="pane-peer" class="hidden space-y-4">
             <div id="peer-form-container" class="space-y-4">
-                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                    <label class="text-[10px] font-bold text-blue-800 uppercase">Pilih Rakan Kumpulan (Skala 1-5)</label>
-                    <select id="sel-peer-target" class="w-full p-3 mt-1 rounded-lg border font-bold text-sm"></select>
+                <select id="sel-peer-target" class="w-full p-3 rounded-lg border font-bold text-sm bg-blue-50"></select>
+                <div class="grid grid-cols-5 gap-1">
+                    <div class="text-center"><label class="text-[8px] font-bold">KEPIMPINAN</label><input type="number" id="p_m1" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[8px] font-bold">KERJASAMA</label><input type="number" id="p_m2" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[8px] font-bold">KOMUNIKASI</label><input type="number" id="p_m3" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[8px] font-bold">KOMITMEN</label><input type="number" id="p_m4" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[8px] font-bold">SAHSIAH</label><input type="number" id="p_m5" class="input-mark" min="1" max="5"></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
-                    <div class="text-center"><label class="text-[9px] font-bold">KEPIMPINAN</label><input type="number" id="p_m1" class="input-mark" min="1" max="5"></div>
-                    <div class="text-center"><label class="text-[9px] font-bold">KERJASAMA</label><input type="number" id="p_m2" class="input-mark" min="1" max="5"></div>
-                    <div class="text-center"><label class="text-[9px] font-bold">KOMUNIKASI</label><input type="number" id="p_m3" class="input-mark" min="1" max="5"></div>
-                    <div class="text-center"><label class="text-[9px] font-bold">KOMITMEN</label><input type="number" id="p_m4" class="input-mark" min="1" max="5"></div>
-                    <div class="text-center"><label class="text-[9px] font-bold">SAHSIAH</label><input type="number" id="p_m5" class="input-mark" min="1" max="5"></div>
-                </div>
-                <button onclick="submitPeerReview()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-sm shadow-xl">HANTAR PENILAIAN SEKALI SAHAJA</button>
+                <button onclick="submitPeerReview()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold uppercase text-xs shadow-xl">Hantar Penilaian Sekali Sahaja</button>
             </div>
+            <div id="peer-done-msg" class="hidden p-10 text-center font-bold text-green-600 uppercase">Penilaian anda telah dihantar.</div>
         </div>
     </div>
 
-    <div id="view-lecturer" class="glass w-full max-w-6xl p-6 hidden">
-        <div class="flex justify-between items-center mb-6 border-b pb-4">
-            <h2 class="text-lg font-bold text-gray-800">PANEL PENYELARAS BIG</h2>
-            <button onclick="location.reload()" class="text-red-600 font-bold text-xs">KELUAR</button>
+    <div id="view-lecturer" class="glass w-full max-w-6xl p-6 hidden relative">
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h2 class="text-lg font-bold uppercase">Panel Penyelaras BIG</h2>
+            <button onclick="location.reload()" class="text-red-600 font-bold text-xs uppercase">Keluar</button>
         </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <div class="space-y-4">
-                <select id="sel-class" onchange="filterStudents()" class="w-full p-2 border rounded-lg text-sm bg-gray-50"></select>
-                <select id="sel-student" onchange="loadStudentDataAdmin()" class="w-full p-2 border rounded-lg text-sm bg-gray-50"></select>
-                <div class="h-64 bg-gray-200 rounded-xl overflow-hidden shadow-inner border-4 border-white">
-                    <img id="lec-view-img" class="w-full h-full object-cover hidden">
-                </div>
+                <select id="sel-class" onchange="filterStudents()" class="w-full p-3 rounded-lg border text-sm bg-gray-50 font-bold"></select>
+                <select id="sel-student" class="w-full p-3 rounded-lg border text-sm bg-gray-50 font-bold"></select>
+                <button onclick="loadStudentDataAdmin()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md">Mula Menilai</button>
             </div>
-            <div class="bg-white p-6 rounded-2xl border shadow-sm flex flex-col items-center">
-                <h3 class="text-xs font-bold text-indigo-900 mb-4">SPIDER GRAPH (PENILAIAN RAKAN)</h3>
-                <div class="w-full max-w-[300px]"><canvas id="spiderChart"></canvas></div>
-                <p id="no-graph-msg" class="text-[9px] text-gray-400 mt-4 italic">Tiada data untuk dipaparkan.</p>
+            
+            <div class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border shadow-sm">
+                <h3 class="text-[10px] font-bold text-gray-400 mb-4 uppercase">Spider Graph (Kekuatan Rakan)</h3>
+                <div class="w-full max-w-[250px]"><canvas id="spiderChart"></canvas></div>
             </div>
-            <div class="bg-indigo-900 text-white p-6 rounded-2xl shadow-xl flex flex-col justify-center text-center">
-                <h3 class="text-xs font-bold text-indigo-300 uppercase mb-4 tracking-widest">Markah Keseluruhan</h3>
-                <div class="text-5xl font-black mb-2" id="res-total">0.0</div>
-                <div class="space-y-1 text-xs font-bold text-indigo-200">
-                    <p>Kuiz: <span id="res-t1">-</span></p>
-                    <p>Amali 1: <span id="res-t2">-</span></p>
-                    <p>Amali 2: <span id="res-t3">-</span></p>
+
+            <div class="bg-gray-100 rounded-2xl overflow-hidden shadow-inner border-4 border-white flex items-center justify-center h-64">
+                <img id="lec-view-img" class="w-full h-full object-cover hidden">
+                <i id="img-placeholder" class="fas fa-user text-gray-300 text-5xl"></i>
+            </div>
+        </div>
+
+        <div id="grading-area" class="hidden animate-fade-in">
+            <div class="flex gap-2 mb-4 overflow-x-auto pb-2">
+                <button onclick="switchMarkTab('t1')" id="tab-mark-t1" class="flex-1 py-2 px-4 rounded-lg text-xs font-bold border transition tab-inactive">TUGASAN 1 (10%)</button>
+                <button onclick="switchMarkTab('t2')" id="tab-mark-t2" class="flex-1 py-2 px-4 rounded-lg text-xs font-bold border transition tab-inactive">AMALI 1 (20%)</button>
+                <button onclick="switchMarkTab('t3')" id="tab-mark-t3" class="flex-1 py-2 px-4 rounded-lg text-xs font-bold border transition tab-active">AMALI 2 (70%)</button>
+            </div>
+
+            <div id="form-t1" class="mark-form hidden p-6 bg-white rounded-xl border border-indigo-100">
+                <h3 class="font-bold text-indigo-700 mb-4 uppercase text-xs">Penilaian Tugasan 1: Kuiz (10%)</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-[10px] font-bold">KUIZ 1 (5)</label><input type="number" id="t1_m1" class="input-mark" step="0.1" max="5"></div>
+                    <div><label class="text-[10px] font-bold">KUIZ 2 (5)</label><input type="number" id="t1_m2" class="input-mark" step="0.1" max="5"></div>
                 </div>
+                <button onclick="submitMark('MARKAH_TUGASAN1')" class="mt-6 w-full bg-indigo-600 text-white py-3 rounded-lg font-bold text-xs uppercase shadow-lg">Simpan Tugasan 1</button>
+            </div>
+
+            <div id="form-t2" class="mark-form hidden p-6 bg-white rounded-xl border border-orange-100">
+                <h3 class="font-bold text-orange-700 mb-4 uppercase text-xs">Penilaian Amali 1 (20%)</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div><label class="text-[10px] font-bold uppercase">HP4 Etiket (5)</label><input type="number" id="t2_m1" class="input-mark" step="0.1" max="5"></div>
+                    <div><label class="text-[10px] font-bold uppercase">HP4 Guru (5)</label><input type="number" id="t2_m2" class="input-mark" step="0.1" max="5"></div>
+                    <div><label class="text-[10px] font-bold uppercase">HP5 Warga (10)</label><input type="number" id="t2_m3" class="input-mark" step="0.1" max="10"></div>
+                </div>
+                <button onclick="submitMark('MARKAH_TUGASAN2')" class="mt-6 w-full bg-orange-600 text-white py-3 rounded-lg font-bold text-xs uppercase shadow-lg">Simpan Amali 1</button>
+            </div>
+
+            <div id="form-t3" class="mark-form p-6 bg-white rounded-xl border border-green-100">
+                <div class="flex justify-between mb-4 border-b pb-2"><h3 class="font-bold text-green-700 uppercase text-xs">HP3: KEMAHIRAN (25%)</h3><span class="text-xs font-bold text-gray-400">5.0 / 25</span></div>
+                <div class="grid grid-cols-5 gap-2 mb-8">
+                    <div><label class="text-[9px] font-bold block text-center uppercase">Cergas</label><input type="number" id="t3_hp3_1" class="input-mark" max="5"></div>
+                    <div><label class="text-[9px] font-bold block text-center uppercase">Makan</label><input type="number" id="t3_hp3_2" class="input-mark" max="5"></div>
+                    <div><label class="text-[9px] font-bold block text-center uppercase">Flying</label><input type="number" id="t3_hp3_3" class="input-mark" max="5"></div>
+                    <div><label class="text-[9px] font-bold block text-center uppercase">Tazkirah</label><input type="number" id="t3_hp3_4" class="input-mark" max="5"></div>
+                    <div><label class="text-[9px] font-bold block text-center uppercase">Refleksi</label><input type="number" id="t3_hp3_5" class="input-mark" max="5"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-blue-50 rounded-xl">
+                        <div class="flex justify-between border-b border-blue-200 mb-2 pb-1"><h3 class="text-[10px] font-bold text-blue-700 uppercase">HP8: IND (15%)</h3><span class="text-[9px] font-bold">0.0 / 15</span></div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Kem</label><input type="number" id="t3_hp8_1" class="input-mark" max="5"></div>
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Air</label><input type="number" id="t3_hp8_2" class="input-mark" max="5"></div>
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Rak</label><input type="number" id="t3_hp8_3" class="input-mark" max="5"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-purple-50 rounded-xl">
+                        <div class="flex justify-between border-b border-purple-200 mb-2 pb-1"><h3 class="text-[10px] font-bold text-purple-700 uppercase">HP8: KUM (30%)</h3><span class="text-[9px] font-bold">0.0 / 30</span></div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Kem</label><input type="number" id="t3_hp8_4" class="input-mark" max="10"></div>
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Air</label><input type="number" id="t3_hp8_5" class="input-mark" max="5"></div>
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Rak</label><input type="number" id="t3_hp8_6" class="input-mark" max="5"></div>
+                            <div><label class="text-[8px] font-bold block text-center uppercase">Makan</label><input type="number" id="t3_hp8_7" class="input-mark" max="10"></div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="submitMark('MARKAH_TUGASAN3')" class="mt-8 w-full bg-green-600 text-white py-4 rounded-xl font-bold uppercase text-xs shadow-xl tracking-widest">Simpan Amali 2</button>
             </div>
         </div>
     </div>
@@ -140,42 +182,41 @@
         let currentStudent = null, allStudentsCache = [], spiderChartInstance = null, pendingImage = null;
 
         const showLoader = (s,t="Memproses...") => { document.getElementById('loader').classList.toggle('hidden',!s); document.getElementById('loader-text').innerText=t; };
-        const switchLogin = (r) => { document.getElementById('form-student').classList.toggle('hidden',r!=='student'); document.getElementById('form-lecturer').classList.toggle('hidden',r!=='lecturer'); document.getElementById('tab-student').className = r==='student'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400'; document.getElementById('tab-lecturer').className = r==='lecturer'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400'; };
-        const switchStudentTab = (t) => { document.getElementById('pane-profile').classList.toggle('hidden',t!=='profile'); document.getElementById('pane-peer').classList.toggle('hidden',t!=='peer'); document.getElementById('btn-tab-profile').className = t==='profile'?'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active':'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive'; document.getElementById('btn-tab-peer').className = t==='peer'?'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active':'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive'; };
+        const switchLogin = (r) => { 
+            document.getElementById('form-student').classList.toggle('hidden',r!=='student'); document.getElementById('form-lecturer').classList.toggle('hidden',r!=='lecturer');
+            document.getElementById('tab-student').className = r==='student'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400 border-b-4 border-transparent';
+            document.getElementById('tab-lecturer').className = r==='lecturer'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400 border-b-4 border-transparent';
+        };
 
+        // --- PELAJAR ---
         async function loginStudent(e) {
             e.preventDefault();
-            showLoader(true, "Menghubungi Pelayan...");
-            try {
-                const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_student", no_kp:document.getElementById('login-ic').value})});
-                const res = await r.json();
-                if(res.result === 'success') { currentStudent = res.data; initStudentView(); } 
-                else alert(res.message);
-            } catch(e) { alert("Ralat Sambungan"); }
+            showLoader(true);
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_student", no_kp:document.getElementById('login-ic').value})});
+            const res = await r.json();
             showLoader(false);
+            if(res.result==='success') { currentStudent=res.data; initStudentDashboard(); } else alert(res.message);
         }
 
-        async function initStudentView() {
+        function initStudentDashboard() {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-student').classList.remove('hidden');
             document.getElementById('std-name').innerText = currentStudent.nama;
-            document.getElementById('std-id-info').innerText = `ID: ${currentStudent.id} | KELAS: ${currentStudent.kelas}`;
-            document.getElementById('std-siri').value = currentStudent.siri || "";
-            document.getElementById('std-kumpulan').value = currentStudent.kumpulan || "";
-            document.getElementById('std-alahan').value = currentStudent.alahan || "";
-            document.getElementById('std-ubat').value = currentStudent.ubat || "";
-            document.getElementById('std-tel').value = currentStudent.tel_kecemasan || "";
-            if(currentStudent.url_gambar) { document.getElementById('std-img').src = currentStudent.url_gambar; document.getElementById('std-img').classList.remove('hidden'); }
-
-            // Semak status peer
-            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"check_peer_status", reviewer_id:currentStudent.id})});
-            const status = await r.json();
-            if(status.result === 'exists') {
-                document.getElementById('peer-form-container').classList.add('hidden');
-                document.getElementById('peer-done-msg').classList.remove('hidden');
-            } else if(currentStudent.siri && currentStudent.kumpulan) {
-                loadTeammates();
-            }
+            document.getElementById('std-siri').value = currentStudent.siri;
+            document.getElementById('std-kumpulan').value = currentStudent.kumpulan;
+            document.getElementById('std-alahan').value = currentStudent.alahan;
+            document.getElementById('std-ubat').value = currentStudent.ubat;
+            document.getElementById('std-tel').value = currentStudent.tel_kecemasan;
+            if(currentStudent.url_gambar) { document.getElementById('std-img').src=currentStudent.url_gambar; document.getElementById('std-img').classList.remove('hidden'); }
+            
+            // Check status peer
+            fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"check_peer_status", reviewer_id:currentStudent.id})})
+            .then(r=>r.json()).then(res=>{
+                if(res.result==='exists') {
+                    document.getElementById('peer-form-container').classList.add('hidden');
+                    document.getElementById('peer-done-msg').classList.remove('hidden');
+                } else loadTeammates();
+            });
         }
 
         async function loadTeammates() {
@@ -183,41 +224,11 @@
             const res = await r.json();
             const teammates = res.students_list.filter(s => s.siri == currentStudent.siri && s.kumpulan == currentStudent.kumpulan && s.id != currentStudent.id);
             const sel = document.getElementById('sel-peer-target');
-            sel.innerHTML = teammates.length ? '<option value="">-- Pilih Rakan --</option>' : '<option>Tiada rakan dikesan dlm kumpulan ini</option>';
+            sel.innerHTML = '<option value="">-- PILIH RAKAN KUMPULAN --</option>';
             teammates.forEach(t => sel.innerHTML += `<option value="${t.id}">${t.nama}</option>`);
         }
 
-        async function updateStudentData() {
-            showLoader(true, "Menyimpan maklumat...");
-            const p = {
-                action: "update_student_info", no_kp: currentStudent.no_kp,
-                siri: document.getElementById('std-siri').value,
-                kumpulan: document.getElementById('std-kumpulan').value,
-                alahan: document.getElementById('std-alahan').value,
-                ubat: document.getElementById('std-ubat').value,
-                tel_kecemasan: document.getElementById('std-tel').value
-            };
-            if(pendingImage) p.image_base64 = pendingImage;
-            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify(p)});
-            const res = await r.json();
-            showLoader(false);
-            alert(res.message);
-            location.reload();
-        }
-
-        async function submitPeerReview() {
-            const targetId = document.getElementById('sel-peer-target').value;
-            const m1 = document.getElementById('p_m1').value, m2 = document.getElementById('p_m2').value, m3 = document.getElementById('p_m3').value, m4 = document.getElementById('p_m4').value, m5 = document.getElementById('p_m5').value;
-            if(!targetId || !m1 || !m2 || !m3 || !m4 || !m5) return alert("Sila lengkapkan semua markah (1-5)");
-            if(!confirm("Anda hanya boleh hantar SEKALI SAHAJA. Teruskan?")) return;
-            showLoader(true, "Menghantar penilaian...");
-            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"submit_peer_review", reviewer_id:currentStudent.id, target_id:targetId, siri:currentStudent.siri, kumpulan:currentStudent.kumpulan, m1, m2, m3, m4, m5})});
-            const res = await r.json();
-            showLoader(false);
-            alert(res.message);
-            location.reload();
-        }
-
+        // --- PENSYARAH ---
         async function loginLecturer(e) {
             e.preventDefault();
             showLoader(true);
@@ -230,7 +241,7 @@
                 document.getElementById('view-lecturer').classList.remove('hidden');
                 const classes = [...new Set(allStudentsCache.map(s => s.kelas))].sort();
                 const sel = document.getElementById('sel-class');
-                sel.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                sel.innerHTML = '<option value="">-- PILIH KELAS --</option>';
                 classes.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
             } else alert(res.message);
         }
@@ -238,53 +249,90 @@
         function filterStudents() {
             const c = document.getElementById('sel-class').value;
             const sel = document.getElementById('sel-student');
-            sel.innerHTML = '<option value="">-- Pilih Pelajar --</option>';
+            sel.innerHTML = '<option value="">-- PILIH PELAJAR --</option>';
             allStudentsCache.filter(s => s.kelas === c).sort((a,b)=>a.nama.localeCompare(b.nama)).forEach(s => sel.innerHTML += `<option value="${s.id}">${s.nama}</option>`);
         }
 
         async function loadStudentDataAdmin() {
             const id = document.getElementById('sel-student').value;
-            if(!id) return;
-            const s = allStudentsCache.find(x => x.id == id);
-            const img = document.getElementById('lec-view-img');
-            if(s.url_gambar) { img.src = s.url_gambar; img.classList.remove('hidden'); } else img.classList.add('hidden');
-            
+            if(!id) return alert("Pilih pelajar.");
             showLoader(true);
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_student_marks", student_id:id})});
             const res = await r.json();
             showLoader(false);
-            
-            document.getElementById('res-t1').innerText = res.academic.t1;
-            document.getElementById('res-t2').innerText = res.academic.t2;
-            document.getElementById('res-t3').innerText = res.academic.t3;
-            document.getElementById('res-total').innerText = (res.academic.t1 + res.academic.t2 + res.academic.t3).toFixed(1);
-            
+
+            const student = allStudentsCache.find(x => x.id == id);
+            const img = document.getElementById('lec-view-img'), ph = document.getElementById('img-placeholder');
+            if(student.url_gambar) { img.src=student.url_gambar; img.classList.remove('hidden'); ph.classList.add('hidden'); } 
+            else { img.classList.add('hidden'); ph.classList.remove('hidden'); }
+
+            // Isi input markah
+            document.getElementById('t1_m1').value = res.marks.t1.m1;
+            document.getElementById('t1_m2').value = res.marks.t1.m2;
+            document.getElementById('t2_m1').value = res.marks.t2.m1;
+            document.getElementById('t2_m2').value = res.marks.t2.m2;
+            document.getElementById('t2_m3').value = res.marks.t2.m3;
+            for(let i=1; i<=5; i++) document.getElementById(`t3_hp3_${i}`).value = res.marks.t3.hp3[i-1];
+            for(let i=1; i<=7; i++) document.getElementById(`t3_hp8_${i}`).value = res.marks.t3.hp8[i-1];
+
+            document.getElementById('grading-area').classList.remove('hidden');
             renderSpiderGraph(res.peerAverages);
+        }
+
+        async function submitMark(sn) {
+            const sid = document.getElementById('sel-student').value;
+            let p = { action: "save_mark", sheet_name: sn, student_id: sid };
+            if(sn==='MARKAH_TUGASAN1') { p.m1 = document.getElementById('t1_m1').value; p.m2 = document.getElementById('t1_m2').value; }
+            else if(sn==='MARKAH_TUGASAN2') { p.m1 = document.getElementById('t2_m1').value; p.m2 = document.getElementById('t2_m2').value; p.m3 = document.getElementById('t2_m3').value; }
+            else {
+                for(let i=1; i<=5; i++) p[`hp3_${i}`] = document.getElementById(`t3_hp3_${i}`).value;
+                for(let i=1; i<=7; i++) p[`hp8_${i}`] = document.getElementById(`t3_hp8_${i}`).value;
+            }
+            showLoader(true);
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify(p)});
+            const res = await r.json();
+            showLoader(false);
+            alert(res.message);
+        }
+
+        function switchMarkTab(t) {
+            document.querySelectorAll('.mark-form').forEach(f => f.classList.add('hidden'));
+            document.getElementById('form-'+t).classList.remove('hidden');
+            ['t1','t2','t3'].forEach(x => {
+                document.getElementById('tab-mark-'+x).className = x===t ? "flex-1 py-2 px-4 rounded-lg text-xs font-bold border transition tab-active" : "flex-1 py-2 px-4 rounded-lg text-xs font-bold border transition tab-inactive";
+            });
         }
 
         function renderSpiderGraph(dataPoints) {
             const ctx = document.getElementById('spiderChart').getContext('2d');
             if(spiderChartInstance) spiderChartInstance.destroy();
-            document.getElementById('no-graph-msg').classList.toggle('hidden', dataPoints.some(v => v > 0));
             spiderChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ['Kepimpinan', 'Kerjasama', 'Komunikasi', 'Komitmen', 'Sahsiah'],
                     datasets: [{ label: 'Purata', data: dataPoints, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: '#4f46e5', borderWidth: 2 }]
                 },
-                options: { scales: { r: { min: 0, max: 5, ticks: { stepSize: 1, display: false } } }, plugins: { legend: { display: false } } }
+                options: { scales: { r: { min: 0, max: 5, ticks: { display: false } } }, plugins: { legend: { display: false } } }
             });
+        }
+
+        // --- LAIN-LAIN ---
+        function switchStudentTab(t) {
+            document.getElementById('pane-profile').classList.toggle('hidden', t!=='profile');
+            document.getElementById('pane-peer').classList.toggle('hidden', t!=='peer');
+            document.getElementById('btn-tab-profile').className = t==='profile'?"flex-1 py-3 rounded-xl font-bold text-xs bg-indigo-600 text-white":"flex-1 py-3 rounded-xl font-bold text-xs bg-gray-100 text-gray-500";
+            document.getElementById('btn-tab-peer').className = t==='peer'?"flex-1 py-3 rounded-xl font-bold text-xs bg-indigo-600 text-white":"flex-1 py-3 rounded-xl font-bold text-xs bg-gray-100 text-gray-500";
         }
 
         function handleFiles(f) {
             if(!f.length) return;
-            const reader = new FileReader();
-            reader.onload = e => {
-                const img = document.getElementById('std-img');
-                img.src = e.target.result; img.classList.remove('hidden');
+            const r = new FileReader();
+            r.onload = e => {
+                document.getElementById('std-img').src = e.target.result;
+                document.getElementById('std-img').classList.remove('hidden');
                 pendingImage = e.target.result;
             };
-            reader.readAsDataURL(f[0]);
+            r.readAsDataURL(f[0]);
         }
     </script>
 </body>
