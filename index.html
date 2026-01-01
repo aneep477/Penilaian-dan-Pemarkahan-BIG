@@ -3,337 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem e-BIG IPGKDA | Penilaian Rakan</title>
+    <title>Sistem e-BIG IPGKDA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Poppins', sans-serif; background: url('https://i.imgur.com/q4WcRZJ.jpeg') no-repeat center center fixed; background-size: cover; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); }
+        .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-out; }
-        .loader { border-top-color: #10b981; animation: spinner 1s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .tab-active { background-color: #10b981; color: white; border-color: #10b981; }
-        .input-mark { text-align: center; border: 1px solid #d1d5db; border-radius: 0.5rem; padding: 0.5rem; width: 100%; font-weight: bold; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-btn-active { background-color: #4f46e5; color: white; }
+        .tab-btn-inactive { background-color: #f3f4f6; color: #6b7280; }
+        .input-mark { text-align: center; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px; width: 100%; font-weight: bold; }
+        .loader { border-top-color: #4f46e5; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <div id="toast" class="fixed top-6 right-6 z-[60] hidden px-6 py-4 rounded-lg shadow-xl text-white font-bold transition-all flex items-center gap-3">
-        <i id="toast-icon" class="fas fa-info-circle"></i> <span id="toast-msg">Mesej</span>
-    </div>
-    <div id="loader" class="fixed inset-0 bg-black/60 z-[70] hidden flex flex-col items-center justify-center backdrop-blur-sm">
-        <div class="loader ease-linear rounded-full border-4 border-t-4 border-white h-12 w-12 mb-4"></div>
-        <p class="text-white font-bold animate-pulse text-lg" id="loader-text">Memproses...</p>
+    <div id="loader" class="fixed inset-0 bg-black/50 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-md">
+        <div class="loader w-12 h-12 border-4 border-gray-200 rounded-full mb-4"></div>
+        <p class="text-white font-bold" id="loader-text">Memproses...</p>
     </div>
 
-    <div id="view-login" class="glass w-full max-w-md p-8 fade-in">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 text-green-700 mb-3 shadow-md">
-                <i class="fas fa-campground text-3xl"></i>
+    <div id="view-login" class="glass w-full max-w-md p-8">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-black text-indigo-900">Sistem e-BIG</h1>
+            <p class="text-xs font-bold text-gray-400">PENGURUSAN BINA INSAN GURU</p>
+        </div>
+        <div class="flex gap-1 mb-6">
+            <button onclick="switchLogin('student')" id="tab-student" class="flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600">PELAJAR</button>
+            <button onclick="switchLogin('lecturer')" id="tab-lecturer" class="flex-1 py-2 font-bold text-xs text-gray-400">PENSYARAH</button>
+        </div>
+        <form id="form-student" onsubmit="loginStudent(event)" class="space-y-4">
+            <input type="text" id="login-ic" class="w-full p-4 rounded-xl border text-center font-black tracking-widest text-lg" placeholder="NO. KAD PENGENALAN" required>
+            <button class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">MASUK KE PANEL</button>
+        </form>
+        <form id="form-lecturer" onsubmit="loginLecturer(event)" class="space-y-4 hidden">
+            <input type="email" id="login-email" class="w-full p-3 border rounded-lg" placeholder="Emel">
+            <input type="password" id="login-pass" class="w-full p-3 border rounded-lg" placeholder="Kata Laluan">
+            <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">LOG MASUK PENSYARAH</button>
+        </form>
+    </div>
+
+    <div id="view-student" class="glass w-full max-w-4xl p-6 hidden">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <div>
+                <h2 id="std-name" class="text-xl font-bold text-gray-800 uppercase">Nama Pelajar</h2>
+                <p id="std-id-info" class="text-[10px] font-bold text-gray-400">ID: - | KELAS: -</p>
             </div>
-            <h1 class="text-2xl font-extrabold text-gray-800">e-BIG IPGKDA</h1>
-            <p class="text-sm text-gray-500 font-medium">Sistem Penilaian MPU3212</p>
+            <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-bold text-[10px]">KELUAR</button>
         </div>
-        <div class="flex border-b mb-6 text-sm">
-            <button onclick="switchLogin('student')" id="tab-student" class="flex-1 pb-2 font-bold text-green-600 border-b-2 border-green-600">PELAJAR</button>
-            <button onclick="switchLogin('lecturer')" id="tab-lecturer" class="flex-1 pb-2 font-bold text-gray-400 border-b-2 border-transparent">PENSYARAH</button>
-        </div>
-        <form id="form-student" onsubmit="loginStudent(event)" class="space-y-5">
-            <div><label class="text-xs font-bold text-gray-500">NO. KAD PENGENALAN</label><input type="text" id="login-ic" class="w-full p-3 border rounded-lg text-center font-bold tracking-wider" placeholder="Contoh: 010101010101" required></div>
-            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-md transition">LOG MASUK</button>
-        </form>
-        <form id="form-lecturer" onsubmit="loginLecturer(event)" class="space-y-5 hidden">
-            <div><label class="text-xs font-bold text-gray-500">EMEL</label><input type="email" id="login-email" class="w-full p-3 border rounded-lg" required></div>
-            <div><label class="text-xs font-bold text-gray-500">KATA LALUAN</label><input type="password" id="login-pass" class="w-full p-3 border rounded-lg" required></div>
-            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition">LOG MASUK PENILAI</button>
-        </form>
-    </div>
 
-    <div id="view-student" class="glass w-full max-w-4xl p-6 hidden fade-in relative min-h-[80vh]">
-        <button onclick="location.reload()" class="absolute top-4 right-4 text-red-600 font-bold text-xs"><i class="fas fa-sign-out-alt"></i> KELUAR</button>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+        <div class="flex gap-2 mb-6">
+            <button onclick="switchStudentTab('profile')" id="btn-tab-profile" class="flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active">1. PROFIL & KUMPULAN (SEBELUM)</button>
+            <button onclick="switchStudentTab('peer')" id="btn-tab-peer" class="flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive">2. PENILAIAN RAKAN (SELEPAS)</button>
+        </div>
+
+        <div id="pane-profile" class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="flex flex-col items-center">
-                <div id="drop-area" class="w-48 h-64 bg-white rounded-xl shadow-inner border-2 border-dashed border-gray-300 flex items-center justify-center relative overflow-hidden group">
-                    <img id="std-img" class="w-full h-full object-cover hidden absolute z-10">
-                    <div class="text-center p-4"><i class="fas fa-camera text-gray-300 text-3xl mb-2"></i><p class="text-[10px] text-gray-500 font-bold uppercase">Foto Profil</p></div>
-                    <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer z-20" accept="image/*" onchange="handleFiles(this.files)">
-                </div>
-                <div class="mt-4 text-center">
-                    <h2 class="text-xl font-bold text-gray-800" id="std-name">Nama Pelajar</h2>
-                    <p class="text-xs text-gray-500 font-bold" id="std-class-info">Kelas - Siri - Kumpulan</p>
+                <div class="w-44 h-56 bg-gray-100 rounded-2xl overflow-hidden border-4 border-white shadow-xl relative group">
+                    <img id="std-img" class="w-full h-full object-cover hidden">
+                    <input type="file" id="file-input" class="absolute inset-0 opacity-0 cursor-pointer z-20" onchange="handleFiles(this.files)">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-300 font-bold text-[10px] text-center p-4">KLIK UNTUK MUAT NAIK GAMBAR</div>
                 </div>
             </div>
-
-            <div class="md:col-span-2 space-y-6">
-                <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100 shadow-sm">
-                    <div class="flex items-center gap-2 mb-4">
-                        <i class="fas fa-users text-indigo-600"></i>
-                        <h3 class="font-bold text-gray-800 uppercase text-sm">Penilaian Rakan Sebaya</h3>
-                    </div>
-                    
-                    <div id="peer-status-msg" class="hidden p-3 bg-white border border-indigo-200 text-indigo-700 rounded-lg mb-4 text-xs font-bold text-center">
-                        <i class="fas fa-check-circle mr-1"></i> Anda telah menghantar penilaian.
-                    </div>
-
-                    <div id="peer-form" class="space-y-4">
-                        <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase">1. Pilih Rakan Kumpulan</label>
-                            <select id="sel-peer-target" class="w-full p-2 border rounded text-sm bg-white"></select>
-                        </div>
-                        <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
-                            <div><label class="text-[9px] font-bold block text-center">Kepimpinan</label><input type="number" id="p_m1" class="input-mark" min="1" max="5" placeholder="1-5"></div>
-                            <div><label class="text-[9px] font-bold block text-center">Kerjasama</label><input type="number" id="p_m2" class="input-mark" min="1" max="5" placeholder="1-5"></div>
-                            <div><label class="text-[9px] font-bold block text-center">Komunikasi</label><input type="number" id="p_m3" class="input-mark" min="1" max="5" placeholder="1-5"></div>
-                            <div><label class="text-[9px] font-bold block text-center">Komitmen</label><input type="number" id="p_m4" class="input-mark" min="1" max="5" placeholder="1-5"></div>
-                            <div><label class="text-[9px] font-bold block text-center">Sahsiah</label><input type="number" id="p_m5" class="input-mark" min="1" max="5" placeholder="1-5"></div>
-                        </div>
-                        <button onclick="submitPeerReview()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold text-xs shadow-md transition">HANTAR PENILAIAN SEKALAI SAHAJA</button>
-                    </div>
+            <div class="md:col-span-2 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-[10px] font-bold text-indigo-800">SIRI BIG</label><input type="number" id="std-siri" class="w-full p-2 border rounded font-bold" placeholder="Contoh: 1"></div>
+                    <div><label class="text-[10px] font-bold text-indigo-800">KUMPULAN BIG</label><input type="number" id="std-kumpulan" class="w-full p-2 border rounded font-bold" placeholder="Contoh: 1"></div>
                 </div>
-
-                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
-                    <h3 class="font-bold text-gray-800 text-xs uppercase">Maklumat Kesihatan & Kecemasan</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <input type="text" id="std-alahan" class="p-2 border rounded text-sm" placeholder="Alahan">
-                        <input type="text" id="std-ubat" class="p-2 border rounded text-sm" placeholder="Ubat-ubatan">
-                        <input type="text" id="std-tel" class="p-2 border rounded text-sm md:col-span-2" placeholder="No. Telefon Waris (Kecemasan)">
-                    </div>
-                    <button onclick="updateStudentData()" class="w-full bg-slate-800 text-white py-2 rounded font-bold text-xs hover:bg-slate-900 transition">KEMASKINI PROFIL</button>
+                <div class="p-4 bg-indigo-50 rounded-xl space-y-2">
+                    <h3 class="font-bold text-indigo-900 text-xs">MAKLUMAT KESIHATAN</h3>
+                    <input type="text" id="std-alahan" class="w-full p-2 border rounded text-xs" placeholder="Alahan">
+                    <input type="text" id="std-ubat" class="w-full p-2 border rounded text-xs" placeholder="Ubat-ubatan">
+                    <input type="text" id="std-tel" class="w-full p-2 border rounded text-xs" placeholder="No. Telefon Waris">
                 </div>
+                <button onclick="updateStudentData()" class="w-full bg-indigo-900 text-white py-3 rounded-xl font-bold text-sm shadow-lg">SIMPAN MAKLUMAT SEBELUM AKTIVITI</button>
+            </div>
+        </div>
+
+        <div id="pane-peer" class="hidden space-y-6">
+            <div id="peer-done-msg" class="hidden p-8 text-center bg-green-50 text-green-700 rounded-2xl border border-green-200">
+                <i class="fas fa-check-circle text-4xl mb-2"></i>
+                <p class="font-bold uppercase">Penilaian anda telah direkodkan. Terima kasih.</p>
+            </div>
+            <div id="peer-form-container" class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <label class="text-[10px] font-bold text-blue-800 uppercase">Pilih Rakan Kumpulan (Skala 1-5)</label>
+                    <select id="sel-peer-target" class="w-full p-3 mt-1 rounded-lg border font-bold text-sm"></select>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+                    <div class="text-center"><label class="text-[9px] font-bold">KEPIMPINAN</label><input type="number" id="p_m1" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[9px] font-bold">KERJASAMA</label><input type="number" id="p_m2" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[9px] font-bold">KOMUNIKASI</label><input type="number" id="p_m3" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[9px] font-bold">KOMITMEN</label><input type="number" id="p_m4" class="input-mark" min="1" max="5"></div>
+                    <div class="text-center"><label class="text-[9px] font-bold">SAHSIAH</label><input type="number" id="p_m5" class="input-mark" min="1" max="5"></div>
+                </div>
+                <button onclick="submitPeerReview()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-sm shadow-xl">HANTAR PENILAIAN SEKALAI SAHAJA</button>
             </div>
         </div>
     </div>
 
-    <div id="view-lecturer" class="glass w-full max-w-6xl p-6 hidden fade-in relative min-h-[90vh]">
-        <div class="flex justify-between items-center border-b pb-4 mb-6">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold"><i class="fas fa-user-shield"></i></div>
-                <div><h1 class="text-lg font-bold text-gray-800">Panel Penilai BIG</h1><p class="text-xs text-gray-500" id="lec-name">...</p></div>
-            </div>
+    <div id="view-lecturer" class="glass w-full max-w-6xl p-6 hidden">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h2 class="text-lg font-bold text-gray-800">PANEL PENYELARAS BIG</h2>
             <button onclick="location.reload()" class="text-red-600 font-bold text-xs">KELUAR</button>
         </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-xl border border-blue-100 shadow-sm space-y-4">
-                <div><label class="text-[10px] font-bold text-blue-800 uppercase">Pilih Kelas</label><select id="sel-class" onchange="filterStudents()" class="w-full p-2 rounded border text-sm bg-gray-50"></select></div>
-                <div><label class="text-[10px] font-bold text-blue-800 uppercase">Pilih Pelajar</label><select id="sel-student" onchange="loadGradingData()" class="w-full p-2 rounded border text-sm bg-gray-50"></select></div>
-                
-                <div class="pt-4 flex justify-center">
-                    <div class="w-40 h-52 bg-gray-100 rounded-lg overflow-hidden border-2 border-white shadow-md">
-                        <img id="lec-view-img" class="w-full h-full object-cover hidden">
-                        <div id="lec-view-placeholder" class="w-full h-full flex items-center justify-center text-gray-300 text-4xl"><i class="fas fa-user"></i></div>
-                    </div>
+            <div class="space-y-4">
+                <select id="sel-class" onchange="filterStudents()" class="w-full p-2 border rounded-lg text-sm bg-gray-50"></select>
+                <select id="sel-student" onchange="loadStudentDataAdmin()" class="w-full p-2 border rounded-lg text-sm bg-gray-50"></select>
+                <div class="h-64 bg-gray-200 rounded-xl overflow-hidden shadow-inner border-4 border-white">
+                    <img id="lec-view-img" class="w-full h-full object-cover hidden">
                 </div>
             </div>
-
-            <div id="spider-section" class="bg-white p-6 rounded-xl border border-indigo-100 shadow-sm flex flex-col items-center justify-center">
-                <h3 class="text-xs font-bold text-gray-700 mb-4 uppercase">Kekuatan Rakan Sebaya (Spider Graph)</h3>
-                <div class="w-full max-w-[300px]">
-                    <canvas id="spiderChart"></canvas>
-                </div>
-                <p id="no-graph-msg" class="text-[10px] text-gray-400 italic mt-4">Pilih pelajar untuk melihat analisis.</p>
+            <div class="bg-white p-6 rounded-2xl border shadow-sm flex flex-col items-center">
+                <h3 class="text-xs font-bold text-indigo-900 mb-4">SPIDER GRAPH (PENILAIAN RAKAN)</h3>
+                <div class="w-full max-w-[300px]"><canvas id="spiderChart"></canvas></div>
+                <p id="no-graph-msg" class="text-[9px] text-gray-400 mt-4 italic">Tiada data untuk dipaparkan.</p>
             </div>
-
-            <div class="bg-white p-6 rounded-xl border border-green-100 shadow-sm">
-                 <h3 class="text-xs font-bold text-gray-700 mb-4 uppercase">Ringkasan Markah Keseluruhan</h3>
-                 <div id="grading-summary" class="space-y-2 text-sm">
-                     <div class="flex justify-between border-b py-1"><span>Kuiz (10%)</span><span id="res-t1" class="font-bold">-</span></div>
-                     <div class="flex justify-between border-b py-1"><span>Amali 1 (20%)</span><span id="res-t2" class="font-bold">-</span></div>
-                     <div class="flex justify-between border-b py-1"><span>Amali 2 (70%)</span><span id="res-t3" class="font-bold">-</span></div>
-                     <div class="flex justify-between pt-2 text-lg font-black text-blue-700"><span>JUMLAH</span><span id="res-total">0.0</span></div>
-                 </div>
+            <div class="bg-indigo-900 text-white p-6 rounded-2xl shadow-xl flex flex-col justify-center text-center">
+                <h3 class="text-xs font-bold text-indigo-300 uppercase mb-4 tracking-widest">Markah Keseluruhan</h3>
+                <div class="text-5xl font-black mb-2" id="res-total">0.0</div>
+                <div class="space-y-1 text-xs font-bold text-indigo-200">
+                    <p>Kuiz: <span id="res-t1">-</span></p>
+                    <p>Amali 1: <span id="res-t2">-</span></p>
+                    <p>Amali 2: <span id="res-t3">-</span></p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwJ_znPSFvBAbrKcEbnuO-77ySGtM0KKgCNweya9Zszt-b9bB2DS_Fa9T9x4YJjwmFe/exec";
-        let allStudentsCache = [], currentStudent = null, spiderChartInstance = null;
+        let currentStudent = null, allStudentsCache = [], spiderChartInstance = null, pendingImage = null;
 
         const showLoader = (s,t="Memproses...") => { document.getElementById('loader').classList.toggle('hidden',!s); document.getElementById('loader-text').innerText=t; };
-        const showToast = (m,t='success') => { const el=document.getElementById('toast'); document.getElementById('toast-msg').innerText=m; el.className=`fixed top-6 right-6 z-[60] px-6 py-4 rounded-lg shadow-xl text-white font-bold flex items-center gap-3 ${t==='success'?'bg-green-600':'bg-red-600'}`; el.classList.remove('hidden'); setTimeout(()=>el.classList.add('hidden'),3000); };
-        const switchLogin = (r) => { document.getElementById('form-student').classList.toggle('hidden',r!=='student'); document.getElementById('form-lecturer').classList.toggle('hidden',r!=='lecturer'); document.getElementById('tab-student').className = r==='student' ? 'flex-1 pb-2 font-bold text-green-600 border-b-2 border-green-600' : 'flex-1 pb-2 font-bold text-gray-400 border-b-2 border-transparent'; document.getElementById('tab-lecturer').className = r==='lecturer' ? 'flex-1 pb-2 font-bold text-blue-600 border-b-2 border-blue-600' : 'flex-1 pb-2 font-bold text-gray-400 border-b-2 border-transparent'; };
+        const switchLogin = (r) => { document.getElementById('form-student').classList.toggle('hidden',r!=='student'); document.getElementById('form-lecturer').classList.toggle('hidden',r!=='lecturer'); document.getElementById('tab-student').className = r==='student'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400'; document.getElementById('tab-lecturer').className = r==='lecturer'?'flex-1 py-2 font-bold text-xs border-b-4 border-indigo-600':'flex-1 py-2 font-bold text-xs text-gray-400'; };
+        const switchStudentTab = (t) => { document.getElementById('pane-profile').classList.toggle('hidden',t!=='profile'); document.getElementById('pane-peer').classList.toggle('hidden',t!=='peer'); document.getElementById('btn-tab-profile').className = t==='profile'?'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active':'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive'; document.getElementById('btn-tab-peer').className = t==='peer'?'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-active':'flex-1 py-3 rounded-xl font-bold text-xs tab-btn-inactive'; };
 
-        // 1. LOGIN & STUDENT VIEW
         async function loginStudent(e) {
             e.preventDefault();
-            showLoader(true, "Mengesahkan ID...");
+            showLoader(true, "Menghubungi Pelayan...");
             try {
                 const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_student", no_kp:document.getElementById('login-ic').value})});
                 const res = await r.json();
-                showLoader(false);
-                if(res.result === 'success') {
-                    currentStudent = res.data;
-                    loadStudentDashboard();
-                } else showToast(res.message, 'error');
-            } catch(err) { showLoader(false); showToast("Ralat Pelayan", 'error'); }
+                if(res.result === 'success') { currentStudent = res.data; initStudentView(); } 
+                else alert(res.message);
+            } catch(e) { alert("Ralat Sambungan"); }
+            showLoader(false);
         }
 
-        async function loadStudentDashboard() {
+        async function initStudentView() {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-student').classList.remove('hidden');
             document.getElementById('std-name').innerText = currentStudent.nama;
-            document.getElementById('std-class-info').innerText = `${currentStudent.kelas} | SIRI: ${currentStudent.siri || '-'} | KUMP: ${currentStudent.kumpulan || '-'}`;
+            document.getElementById('std-id-info').innerText = `ID: ${currentStudent.id} | KELAS: ${currentStudent.kelas}`;
+            document.getElementById('std-siri').value = currentStudent.siri || "";
+            document.getElementById('std-kumpulan').value = currentStudent.kumpulan || "";
             document.getElementById('std-alahan').value = currentStudent.alahan || "";
             document.getElementById('std-ubat').value = currentStudent.ubat || "";
             document.getElementById('std-tel').value = currentStudent.tel_kecemasan || "";
-            if(currentStudent.url_gambar) { 
-                const img = document.getElementById('std-img');
-                img.src = currentStudent.url_gambar; img.classList.remove('hidden'); 
-            }
+            if(currentStudent.url_gambar) { document.getElementById('std-img').src = currentStudent.url_gambar; document.getElementById('std-img').classList.remove('hidden'); }
 
-            // Semak status Peer Review
-            showLoader(true, "Memeriksa status penilaian...");
+            // Semak status peer
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"check_peer_status", reviewer_id:currentStudent.id})});
             const status = await r.json();
-            
             if(status.result === 'exists') {
-                document.getElementById('peer-form').classList.add('hidden');
-                document.getElementById('peer-status-msg').classList.remove('hidden');
-            } else {
-                // Load teammates
-                const r2 = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_lecturer", email:"guest", password:"guest"})});
-                const res2 = await r2.json();
-                const teammates = res2.students_list.filter(s => s.siri == currentStudent.siri && s.kumpulan == currentStudent.kumpulan && s.id != currentStudent.id);
-                const sel = document.getElementById('sel-peer-target');
-                sel.innerHTML = '<option value="">-- Pilih Rakan --</option>';
-                teammates.forEach(t => sel.innerHTML += `<option value="${t.id}">${t.nama}</option>`);
+                document.getElementById('peer-form-container').classList.add('hidden');
+                document.getElementById('peer-done-msg').classList.remove('hidden');
+            } else if(currentStudent.siri && currentStudent.kumpulan) {
+                loadTeammates();
             }
+        }
+
+        async function loadTeammates() {
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_lecturer", email:"guest", password:"guest"})});
+            const res = await r.json();
+            const teammates = res.students_list.filter(s => s.siri == currentStudent.siri && s.kumpulan == currentStudent.kumpulan && s.id != currentStudent.id);
+            const sel = document.getElementById('sel-peer-target');
+            sel.innerHTML = teammates.length ? '<option value="">-- Pilih Rakan --</option>' : '<option>Tiada rakan dikesan dlm kumpulan ini</option>';
+            teammates.forEach(t => sel.innerHTML += `<option value="${t.id}">${t.nama}</option>`);
+        }
+
+        async function updateStudentData() {
+            showLoader(true, "Menyimpan maklumat...");
+            const p = {
+                action: "update_student_info", no_kp: currentStudent.no_kp,
+                siri: document.getElementById('std-siri').value,
+                kumpulan: document.getElementById('std-kumpulan').value,
+                alahan: document.getElementById('std-alahan').value,
+                ubat: document.getElementById('std-ubat').value,
+                tel_kecemasan: document.getElementById('std-tel').value
+            };
+            if(pendingImage) p.image_base64 = pendingImage;
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify(p)});
+            const res = await r.json();
             showLoader(false);
+            alert(res.message);
+            location.reload();
         }
 
         async function submitPeerReview() {
             const targetId = document.getElementById('sel-peer-target').value;
             const m1 = document.getElementById('p_m1').value, m2 = document.getElementById('p_m2').value, m3 = document.getElementById('p_m3').value, m4 = document.getElementById('p_m4').value, m5 = document.getElementById('p_m5').value;
-            
-            if(!targetId || !m1 || !m2 || !m3 || !m4 || !m5) return showToast("Sila lengkapkan semua markah (1-5)", "error");
-            if(!confirm("Hantar penilaian ini? Anda tidak boleh mengubahnya selepas ini.")) return;
-
-            showLoader(true, "Menghantar...");
-            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({
-                action:"submit_peer_review", reviewer_id:currentStudent.id, target_id:targetId,
-                siri:currentStudent.siri, kumpulan:currentStudent.kumpulan, m1, m2, m3, m4, m5
-            })});
+            if(!targetId || !m1 || !m2 || !m3 || !m4 || !m5) return alert("Sila lengkapkan semua markah (1-5)");
+            if(!confirm("Anda hanya boleh hantar SEKALI SAHAJA. Teruskan?")) return;
+            showLoader(true, "Menghantar penilaian...");
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"submit_peer_review", reviewer_id:currentStudent.id, target_id:targetId, siri:currentStudent.siri, kumpulan:currentStudent.kumpulan, m1, m2, m3, m4, m5})});
             const res = await r.json();
             showLoader(false);
-            if(res.result === 'success') {
-                showToast(res.message);
-                document.getElementById('peer-form').classList.add('hidden');
-                document.getElementById('peer-status-msg').classList.remove('hidden');
-            }
+            alert(res.message);
+            location.reload();
         }
 
-        // 2. LECTURER VIEW
         async function loginLecturer(e) {
             e.preventDefault();
             showLoader(true);
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_lecturer", email:document.getElementById('login-email').value, password:document.getElementById('login-pass').value})});
             const res = await r.json();
             showLoader(false);
-            if(res.result === 'success') {
+            if(res.result==='success') {
                 allStudentsCache = res.students_list;
-                document.getElementById('lec-name').innerText = res.nama;
                 document.getElementById('view-login').classList.add('hidden');
                 document.getElementById('view-lecturer').classList.remove('hidden');
-                initLecDashboard();
-            } else showToast(res.message, 'error');
-        }
-
-        function initLecDashboard() {
-            const classes = [...new Set(allStudentsCache.map(s => s.kelas.trim()))].sort();
-            const sel = document.getElementById('sel-class');
-            sel.innerHTML = '<option value="">-- Pilih Kelas --</option>';
-            classes.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
+                const classes = [...new Set(allStudentsCache.map(s => s.kelas))].sort();
+                const sel = document.getElementById('sel-class');
+                sel.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+                classes.forEach(c => sel.innerHTML += `<option value="${c}">${c}</option>`);
+            } else alert(res.message);
         }
 
         function filterStudents() {
             const c = document.getElementById('sel-class').value;
             const sel = document.getElementById('sel-student');
             sel.innerHTML = '<option value="">-- Pilih Pelajar --</option>';
-            if(c) {
-                allStudentsCache.filter(s => s.kelas === c).sort((a,b)=>a.nama.localeCompare(b.nama))
-                .forEach(s => sel.innerHTML += `<option value="${s.id}">${s.nama}</option>`);
-            }
+            allStudentsCache.filter(s => s.kelas === c).sort((a,b)=>a.nama.localeCompare(b.nama)).forEach(s => sel.innerHTML += `<option value="${s.id}">${s.nama}</option>`);
         }
 
-        async function loadGradingData() {
+        async function loadStudentDataAdmin() {
             const id = document.getElementById('sel-student').value;
             if(!id) return;
-            const student = allStudentsCache.find(s => s.id == id);
+            const s = allStudentsCache.find(x => x.id == id);
+            const img = document.getElementById('lec-view-img');
+            if(s.url_gambar) { img.src = s.url_gambar; img.classList.remove('hidden'); } else img.classList.add('hidden');
             
-            // Preview Image
-            const img = document.getElementById('lec-view-img'), ph = document.getElementById('lec-view-placeholder');
-            if(student.url_gambar) { img.src = student.url_gambar; img.classList.remove('hidden'); ph.classList.add('hidden'); }
-            else { img.classList.add('hidden'); ph.classList.remove('hidden'); }
-
             showLoader(true);
-            // Ambil markah & data peer
-            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_summary_data", kelas:"SEMUA"})});
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_student_marks", student_id:id})});
             const res = await r.json();
-            
-            // Cari data pelajar
-            const data = res.data.find(d => d.nama === student.nama);
-            if(data) {
-                document.getElementById('res-t1').innerText = data.kuiz;
-                document.getElementById('res-t2').innerText = (parseFloat(data.hp4) + parseFloat(data.hp5)).toFixed(1);
-                document.getElementById('res-t3').innerText = (parseFloat(data.hp3) + parseFloat(data.hp8i) + parseFloat(data.hp8k)).toFixed(1);
-                document.getElementById('res-total').innerText = data.total;
-            }
-
-            // Ambil data Peer untuk Spider Graph
-            // Kita anggap backend hantar data purata peer dalam get_student_marks atau action khas
-            // Untuk demo ini, kita fetch secara manual atau integrasi dlm get_student_marks
-            const r2 = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_student_marks", student_id:id})});
-            const res2 = await r2.json();
-            
-            // Plot Spider Graph jika data wujud (Contoh dummy data jika belum ada dlm Sheet)
-            // Sebaiknya anda fetch data purata kolom F-J dari MARKAH_PEER
-            // Di sini kita tunjukkan fungsi render:
-            renderSpiderGraph([4, 3, 5, 2, 4]); // Nilai purata [m1, m2, m3, m4, m5]
-            
             showLoader(false);
+            
+            document.getElementById('res-t1').innerText = res.academic.t1;
+            document.getElementById('res-t2').innerText = res.academic.t2;
+            document.getElementById('res-t3').innerText = res.academic.t3;
+            document.getElementById('res-total').innerText = (res.academic.t1 + res.academic.t2 + res.academic.t3).toFixed(1);
+            
+            renderSpiderGraph(res.peerAverages);
         }
 
         function renderSpiderGraph(dataPoints) {
             const ctx = document.getElementById('spiderChart').getContext('2d');
             if(spiderChartInstance) spiderChartInstance.destroy();
-            document.getElementById('no-graph-msg').classList.add('hidden');
-            
+            document.getElementById('no-graph-msg').classList.toggle('hidden', dataPoints.some(v => v > 0));
             spiderChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ['Kepimpinan', 'Kerjasama', 'Komunikasi', 'Komitmen', 'Sahsiah'],
-                    datasets: [{
-                        label: 'Purata Penilaian Rakan',
-                        data: dataPoints,
-                        backgroundColor: 'rgba(99, 102, 241, 0.2)',
-                        borderColor: 'rgba(99, 102, 241, 1)',
-                        pointBackgroundColor: 'rgba(99, 102, 241, 1)',
-                    }]
+                    datasets: [{ label: 'Purata', data: dataPoints, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: '#4f46e5', borderWidth: 2 }]
                 },
-                options: {
-                    scales: { r: { min: 0, max: 5, ticks: { stepSize: 1 } } },
-                    plugins: { legend: { display: false } }
-                }
+                options: { scales: { r: { min: 0, max: 5, ticks: { stepSize: 1, display: false } } }, plugins: { legend: { display: false } } }
             });
         }
 
-        // Handle Image Upload
-        function handleFiles(files) {
-            if(files.length) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const img = document.getElementById('std-img');
-                    img.src = e.target.result; img.classList.remove('hidden');
-                    pendingImage = e.target.result;
-                };
-                reader.readAsDataURL(files[0]);
-            }
+        function handleFiles(f) {
+            if(!f.length) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                const img = document.getElementById('std-img');
+                img.src = e.target.result; img.classList.remove('hidden');
+                pendingImage = e.target.result;
+            };
+            reader.readAsDataURL(f[0]);
         }
     </script>
 </body>
