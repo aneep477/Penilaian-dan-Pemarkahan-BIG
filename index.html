@@ -24,21 +24,21 @@
 
     <div id="loader" class="fixed inset-0 bg-black/50 z-[100] hidden flex flex-col items-center justify-center backdrop-blur-md">
         <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="text-white font-bold">Sila Tunggu...</p>
+        <p class="text-white font-bold text-sm">Sila Tunggu...</p>
     </div>
 
     <div id="view-login" class="glass w-full max-w-md p-10">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-black text-indigo-900 uppercase">e-BIG IPGKDA</h1>
-            <p class="text-xs font-bold text-gray-400 tracking-widest">SISTEM PENGURUSAN MPU3212</p>
+            <p class="text-xs font-bold text-gray-400 tracking-widest">PENGURUSAN MPU3212</p>
         </div>
         <div class="flex gap-1 mb-8">
             <button onclick="switchLogin('student')" id="tab-student" class="flex-1 py-3 font-bold text-xs border-b-4 border-indigo-600 transition">PELAJAR</button>
             <button onclick="switchLogin('lecturer')" id="tab-lecturer" class="flex-1 py-3 font-bold text-xs text-gray-400 border-b-4 border-transparent transition">PENSYARAH</button>
         </div>
         <form id="form-student" onsubmit="loginStudent(event)" class="space-y-4">
-            <input type="text" id="login-ic" class="w-full p-4 rounded-2xl border text-center font-black tracking-widest text-lg focus:ring-4 focus:ring-indigo-100 outline-none" placeholder="NO. KAD PENGENALAN" required>
-            <button class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-indigo-700 transition transform active:scale-95">LOG MASUK</button>
+            <input type="text" id="login-ic" class="w-full p-4 rounded-2xl border text-center font-black tracking-widest text-lg" placeholder="NO. KAD PENGENALAN" required>
+            <button class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold shadow-xl hover:bg-indigo-700 transition">MASUK</button>
         </form>
         <form id="form-lecturer" onsubmit="loginLecturer(event)" class="space-y-4 hidden">
             <input type="email" id="login-email" class="w-full p-4 border rounded-xl" placeholder="E-mel Rasmi">
@@ -53,8 +53,8 @@
             <button onclick="location.reload()" class="bg-red-50 text-red-600 px-6 py-2 rounded-xl font-bold text-xs uppercase hover:bg-red-100 transition">Keluar</button>
         </div>
         <div class="flex gap-2 mb-8">
-            <button onclick="switchStudentTab('profile')" id="btn-tab-profile" class="flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg">1. PROFIL & KUMPULAN (SEBELUM)</button>
-            <button onclick="switchStudentTab('peer')" id="btn-tab-peer" class="flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500">2. PENILAIAN RAKAN (SELEPAS)</button>
+            <button onclick="switchStudentTab('profile')" id="btn-tab-profile" class="flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg transition">1. PROFIL & KUMPULAN (SEBELUM)</button>
+            <button onclick="switchStudentTab('peer')" id="btn-tab-peer" class="flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500 transition">2. PENILAIAN RAKAN (SELEPAS)</button>
         </div>
         
         <div id="pane-profile" class="grid grid-cols-1 lg:grid-cols-3 gap-10">
@@ -67,13 +67,13 @@
             </div>
             <div class="lg:col-span-2 space-y-6">
                 <div class="grid grid-cols-2 gap-6">
-                    <div><label class="text-[10px] font-bold text-indigo-900 ml-1">SIRI BIG</label><input type="number" id="std-siri" class="w-full p-4 border rounded-2xl font-black focus:ring-4 focus:ring-indigo-50 outline-none"></div>
-                    <div><label class="text-[10px] font-bold text-indigo-900 ml-1">KUMPULAN BIG</label><input type="number" id="std-kumpulan" class="w-full p-4 border rounded-2xl font-black focus:ring-4 focus:ring-indigo-50 outline-none"></div>
+                    <div><label class="text-[10px] font-bold text-indigo-900 ml-1 uppercase">Siri BIG</label><input type="number" id="std-siri" class="w-full p-4 border rounded-2xl font-black focus:ring-4 focus:ring-indigo-50 outline-none"></div>
+                    <div><label class="text-[10px] font-bold text-indigo-900 ml-1 uppercase">Kumpulan BIG</label><input type="number" id="std-kumpulan" class="w-full p-4 border rounded-2xl font-black focus:ring-4 focus:ring-indigo-50 outline-none"></div>
                 </div>
                 <div class="p-6 bg-indigo-50 rounded-3xl space-y-4">
                     <h3 class="font-black text-xs text-indigo-900 uppercase">Maklumat Kesihatan & Kecemasan</h3>
-                    <input type="text" id="std-alahan" class="w-full p-3 border rounded-xl text-xs" placeholder="Alahan (cth: Seafood)">
-                    <input type="text" id="std-ubat" class="w-full p-3 border rounded-xl text-xs" placeholder="Ubat-ubatan Biasa">
+                    <input type="text" id="std-alahan" class="w-full p-3 border rounded-xl text-xs" placeholder="Alahan">
+                    <input type="text" id="std-ubat" class="w-full p-3 border rounded-xl text-xs" placeholder="Ubat-ubatan">
                     <input type="text" id="std-tel" class="w-full p-3 border rounded-xl text-xs font-bold" placeholder="No. Telefon Waris">
                 </div>
                 <button onclick="updateStudentData()" class="w-full bg-indigo-900 text-white py-4 rounded-2xl font-bold shadow-2xl hover:bg-black transition">SIMPAN MAKLUMAT PROFIL</button>
@@ -82,26 +82,26 @@
 
         <div id="pane-peer" class="hidden space-y-6">
             <div id="peer-form-container" class="space-y-6 bg-blue-50/50 p-8 rounded-3xl border-2 border-blue-100">
-                <div><label class="text-xs font-bold text-blue-900 ml-1">1. PILIH RAKAN KUMPULAN</label><select id="sel-peer-target" class="w-full p-4 mt-2 rounded-2xl border font-bold text-sm bg-white outline-none focus:ring-4 focus:ring-blue-100"></select></div>
+                <div><label class="text-xs font-bold text-blue-900 ml-1 uppercase">1. Pilih Rakan Kumpulan (Skala 1-5)</label><select id="sel-peer-target" class="w-full p-4 mt-2 rounded-2xl border font-bold text-sm bg-white outline-none"></select></div>
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
-                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2">KEPIMPINAN</label><input type="number" id="p_m1" class="input-mark text-indigo-600" min="1" max="5"></div>
-                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2">KERJASAMA</label><input type="number" id="p_m2" class="input-mark text-indigo-600" min="1" max="5"></div>
-                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2">KOMUNIKASI</label><input type="number" id="p_m3" class="input-mark text-indigo-600" min="1" max="5"></div>
-                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2">KOMITMEN</label><input type="number" id="p_m4" class="input-mark text-indigo-600" min="1" max="5"></div>
-                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2">SAHSIAH</label><input type="number" id="p_m5" class="input-mark text-indigo-600" min="1" max="5"></div>
+                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2 uppercase">Kepimpinan</label><input type="number" id="p_m1" class="input-mark text-indigo-600" min="1" max="5" placeholder="1-5"></div>
+                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2 uppercase">Kerjasama</label><input type="number" id="p_m2" class="input-mark text-indigo-600" min="1" max="5" placeholder="1-5"></div>
+                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2 uppercase">Komunikasi</label><input type="number" id="p_m3" class="input-mark text-indigo-600" min="1" max="5" placeholder="1-5"></div>
+                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2 uppercase">Komitmen</label><input type="number" id="p_m4" class="input-mark text-indigo-600" min="1" max="5" placeholder="1-5"></div>
+                    <div class="text-center bg-white p-4 rounded-2xl shadow-sm"><label class="text-[9px] font-bold text-gray-400 block mb-2 uppercase">Sahsiah</label><input type="number" id="p_m5" class="input-mark text-indigo-600" min="1" max="5" placeholder="1-5"></div>
                 </div>
                 <button onclick="submitPeerReview()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-bold uppercase text-sm shadow-xl hover:bg-indigo-700 transition">Hantar Penilaian (Sekali Sahaja)</button>
             </div>
-            <div id="peer-done-msg" class="hidden p-16 text-center font-black text-green-600 uppercase tracking-widest bg-green-50 rounded-3xl border-2 border-green-100">Tahniah! Penilaian anda telah direkodkan.</div>
+            <div id="peer-done-msg" class="hidden p-16 text-center font-black text-green-600 uppercase tracking-widest bg-green-50 rounded-3xl border-2 border-green-100">Penilaian anda telah direkodkan.</div>
         </div>
     </div>
 
-    <div id="view-lecturer" class="glass w-full max-w-7xl p-8 hidden relative">
+    <div id="view-lecturer" class="glass w-full max-w-7xl p-8 hidden">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 border-b pb-6 gap-4">
             <h2 class="text-2xl font-black uppercase text-indigo-900">Panel Penilai BIG IPGKDA</h2>
             <div class="flex gap-2">
-                <button onclick="showLecSection('entry')" id="btn-sec-entry" class="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition">ISI MARKAH</button>
-                <button onclick="showLecSection('summary')" id="btn-sec-summary" class="px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition">RUMUSAN PRESTASI</button>
+                <button onclick="showLecSection('entry')" id="btn-sec-entry" class="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition uppercase">Isi Markah</button>
+                <button onclick="showLecSection('summary')" id="btn-sec-summary" class="px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition uppercase">Rumusan</button>
                 <button onclick="location.reload()" class="px-6 py-2 text-red-600 font-bold text-xs uppercase border-l ml-2">Keluar</button>
             </div>
         </div>
@@ -114,10 +114,10 @@
                     <button onclick="loadStudentDataAdmin()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl tracking-widest hover:bg-blue-700 transition">Mula Menilai</button>
                 </div>
                 <div class="flex flex-col items-center justify-center p-6 bg-white rounded-3xl border shadow-sm">
-                    <h3 class="text-[10px] font-black text-gray-400 mb-6 uppercase tracking-widest text-center">Spider Graph (Kekuatan Rakan)</h3>
+                    <h3 class="text-[10px] font-black text-gray-400 mb-6 uppercase tracking-widest">Spider Graph (Kekuatan Rakan)</h3>
                     <div class="w-full max-w-[240px]"><canvas id="spiderChart"></canvas></div>
                 </div>
-                <div class="bg-gray-50 rounded-3xl overflow-hidden border-4 border-white h-72 flex items-center justify-center shadow-inner relative">
+                <div class="bg-gray-50 rounded-3xl overflow-hidden border-4 border-white h-72 flex items-center justify-center shadow-inner">
                     <img id="lec-view-img" class="w-full h-full object-cover hidden">
                     <i id="img-placeholder" class="fas fa-user-circle text-gray-200 text-7xl"></i>
                 </div>
@@ -130,7 +130,7 @@
                     <button onclick="switchMarkTab('t3')" id="tab-mark-t3" class="flex-1 py-3 rounded-xl font-bold text-[10px] border transition tab-active uppercase">Amali 2 (70%)</button>
                 </div>
 
-                <div id="form-t1" class="mark-form hidden p-8 bg-white rounded-3xl border border-indigo-100 shadow-sm animate-in fade-in duration-500">
+                <div id="form-t1" class="mark-form hidden p-8 bg-white rounded-3xl border border-indigo-100 shadow-sm">
                     <div class="flex justify-between items-center mb-6 border-b pb-4"><h3 class="font-black text-indigo-700 uppercase text-sm">Kuiz (10%)</h3><span class="hp-total-badge text-indigo-700" id="total_t1_disp">0.0 / 10</span></div>
                     <div class="grid grid-cols-2 gap-8">
                         <div><label class="text-[10px] font-bold text-gray-400 uppercase mb-2 block">Kuiz 1 (5)</label><input type="number" id="t1_m1" class="input-mark text-lg" step="0.1" max="5" oninput="calcT1()"></div>
@@ -139,33 +139,33 @@
                     <button onclick="submitMark('MARKAH_TUGASAN1')" class="mt-8 w-full bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl tracking-widest">Simpan Tugasan 1</button>
                 </div>
 
-                <div id="form-t2" class="mark-form hidden p-8 bg-white rounded-3xl border border-orange-100 shadow-sm animate-in fade-in duration-500">
+                <div id="form-t2" class="mark-form hidden p-8 bg-white rounded-3xl border border-orange-100 shadow-sm">
                     <div class="flex justify-between items-center mb-6 border-b pb-4"><h3 class="font-black text-orange-700 uppercase text-sm">Amali 1: Sebelum Perkhemahan</h3></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="bg-orange-50/50 p-6 rounded-3xl border border-orange-100">
                             <div class="flex justify-between items-center mb-4"><span class="text-[10px] font-black text-orange-800 uppercase">HP4 (10%)</span><span id="total_hp4_disp" class="hp-total-badge text-orange-800">0.0 / 10</span></div>
                             <div class="space-y-4">
-                                <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Etiket (5)</label><input type="number" id="t2_m1" class="input-mark" oninput="calcT2()"></div>
-                                <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Guru (5)</label><input type="number" id="t2_m2" class="input-mark" oninput="calcT2()"></div>
+                                <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block uppercase">Etiket (5)</label><input type="number" id="t2_m1" class="input-mark" step="0.1" oninput="calcT2()"></div>
+                                <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block uppercase">Guru (5)</label><input type="number" id="t2_m2" class="input-mark" step="0.1" oninput="calcT2()"></div>
                             </div>
                         </div>
                         <div class="bg-orange-50/50 p-6 rounded-3xl border border-orange-100">
                             <div class="flex justify-between items-center mb-4"><span class="text-[10px] font-black text-orange-800 uppercase">HP5 (10%)</span><span id="total_hp5_disp" class="hp-total-badge text-orange-800">0.0 / 10</span></div>
-                            <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Warga (10)</label><input type="number" id="t2_m3" class="input-mark" oninput="calcT2()"></div>
+                            <div><label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block uppercase">Warga (10)</label><input type="number" id="t2_m3" class="input-mark" step="0.1" oninput="calcT2()"></div>
                         </div>
                     </div>
                     <button onclick="submitMark('MARKAH_TUGASAN2')" class="mt-8 w-full bg-orange-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl tracking-widest">Simpan Amali 1</button>
                 </div>
 
-                <div id="form-t3" class="mark-form p-8 bg-white rounded-3xl border border-green-100 shadow-sm animate-in fade-in duration-500">
+                <div id="form-t3" class="mark-form p-8 bg-white rounded-3xl border border-green-100 shadow-sm">
                     <div class="mb-10">
-                        <div class="flex justify-between items-center mb-4 border-b border-green-100 pb-2"><h3 class="font-black text-green-700 uppercase text-xs tracking-widest">HP3: KEMAHIRAN (25%)</h3><span id="total_hp3_disp" class="hp-total-badge text-green-700">0.0 / 25</span></div>
+                        <div class="flex justify-between items-center mb-4 border-b border-green-100 pb-2"><h3 class="font-black text-green-700 uppercase text-xs tracking-widest uppercase">HP3: Kemahiran (25%)</h3><span id="total_hp3_disp" class="hp-total-badge text-green-700">0.0 / 25</span></div>
                         <div class="grid grid-cols-5 gap-3">
-                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Cergas</label><input type="number" id="t3_hp3_1" class="input-mark" oninput="calcT3()"></div>
-                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Makan</label><input type="number" id="t3_hp3_2" class="input-mark" oninput="calcT3()"></div>
-                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Flying</label><input type="number" id="t3_hp3_3" class="input-mark" oninput="calcT3()"></div>
-                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Tazkirah</label><input type="number" id="t3_hp3_4" class="input-mark" oninput="calcT3()"></div>
-                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1">Refleksi</label><input type="number" id="t3_hp3_5" class="input-mark" oninput="calcT3()"></div>
+                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1 uppercase">Cergas</label><input type="number" id="t3_hp3_1" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1 uppercase">Makan</label><input type="number" id="t3_hp3_2" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1 uppercase">Flying</label><input type="number" id="t3_hp3_3" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1 uppercase">Tazkirah</label><input type="number" id="t3_hp3_4" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                            <div class="text-center"><label class="text-[8px] font-bold text-gray-400 uppercase block mb-1 uppercase">Refleksi</label><input type="number" id="t3_hp3_5" class="input-mark" step="0.1" oninput="calcT3()"></div>
                         </div>
                     </div>
 
@@ -173,18 +173,18 @@
                         <div class="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
                             <div class="flex justify-between items-center mb-4"><span class="text-[9px] font-black text-blue-800 uppercase">HP8: IND (15%)</span><span id="total_hp8i_disp" class="hp-total-badge text-blue-800">0.0 / 15</span></div>
                             <div class="grid grid-cols-3 gap-2">
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Kem</label><input type="number" id="t3_hp8_1" class="input-mark" oninput="calcT3()"></div>
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Air</label><input type="number" id="t3_hp8_2" class="input-mark" oninput="calcT3()"></div>
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Rak</label><input type="number" id="t3_hp8_3" class="input-mark" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Kem</label><input type="number" id="t3_hp8_1" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Air</label><input type="number" id="t3_hp8_2" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Rak</label><input type="number" id="t3_hp8_3" class="input-mark" step="0.1" oninput="calcT3()"></div>
                             </div>
                         </div>
                         <div class="bg-purple-50/50 p-6 rounded-3xl border border-purple-100">
                             <div class="flex justify-between items-center mb-4"><span class="text-[9px] font-black text-purple-800 uppercase">HP8: KUM (30%)</span><span id="total_hp8k_disp" class="hp-total-badge text-purple-800">0.0 / 30</span></div>
                             <div class="grid grid-cols-4 gap-2">
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Kem</label><input type="number" id="t3_hp8_4" class="input-mark" oninput="calcT3()"></div>
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Air</label><input type="number" id="t3_hp8_5" class="input-mark" oninput="calcT3()"></div>
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Rak</label><input type="number" id="t3_hp8_6" class="input-mark" oninput="calcT3()"></div>
-                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1">Makan</label><input type="number" id="t3_hp8_7" class="input-mark" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Kem</label><input type="number" id="t3_hp8_4" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Air</label><input type="number" id="t3_hp8_5" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Rak</label><input type="number" id="t3_hp8_6" class="input-mark" step="0.1" oninput="calcT3()"></div>
+                                <div class="text-center"><label class="text-[8px] font-bold uppercase block mb-1 uppercase">Makan</label><input type="number" id="t3_hp8_7" class="input-mark" step="0.1" oninput="calcT3()"></div>
                             </div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
             </div>
         </div>
 
-        <div id="sec-summary" class="hidden animate-in slide-in-from-bottom duration-500">
+        <div id="sec-summary" class="hidden">
             <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                 <h3 class="text-2xl font-black text-gray-800 uppercase">Rumusan Prestasi BIG</h3>
                 <div class="flex gap-2">
@@ -208,7 +208,7 @@
                     <span id="stat-mean" class="text-3xl font-black text-indigo-900">0.00</span>
                 </div>
                 <div class="p-6 bg-white border-2 border-purple-50 rounded-3xl flex justify-between items-center shadow-sm">
-                    <span class="text-xs font-black text-purple-300 uppercase tracking-widest">Std Dev (S.P)</span>
+                    <span class="text-xs font-black text-purple-300 uppercase tracking-widest uppercase">Std Dev (S.P)</span>
                     <span id="stat-std" class="text-3xl font-black text-purple-900">0.00</span>
                 </div>
             </div>
@@ -222,7 +222,7 @@
                             <th colspan="2" class="bg-orange-50">Amali 1 (20%)</th>
                             <th colspan="3" class="bg-green-50">Amali 2 (70%)</th>
                             <th rowspan="2" class="bg-slate-900 text-white">Jum</th>
-                            <th rowspan="2" class="bg-slate-800 text-white rounded-tr-3xl">Gred</th>
+                            <th rowspan="2" class="bg-slate-800 text-white rounded-tr-3xl uppercase">Gred</th>
                         </tr>
                         <tr>
                             <th class="bg-orange-50/50 text-[8px]">HP4 (10)</th>
@@ -233,7 +233,7 @@
                         </tr>
                     </thead>
                     <tbody id="summary-body">
-                        <tr><td colspan="9" class="p-20 italic text-gray-400 tracking-widest">Sila pilih kelas dan tekan butang 'JANA'</td></tr>
+                        <tr><td colspan="9" class="p-20 italic text-gray-400 tracking-widest">Sila pilih kelas dan tekan 'JANA'</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -251,7 +251,7 @@
             document.getElementById('tab-lecturer').className = r==='lecturer'?'flex-1 py-3 font-bold text-xs border-b-4 border-indigo-600 transition':'flex-1 py-3 font-bold text-xs text-gray-400 border-b-4 border-transparent transition';
         };
 
-        // --- PENGIRAAN AUTOMATIK DALAM BORANG ---
+        // --- PENGIRAAN AUTOMATIK ---
         const calcT1 = () => { let val = (parseFloat(document.getElementById('t1_m1').value)||0) + (parseFloat(document.getElementById('t1_m2').value)||0); document.getElementById('total_t1_disp').innerText = val.toFixed(1) + " / 10"; };
         const calcT2 = () => { 
             let hp4 = (parseFloat(document.getElementById('t2_m1').value)||0) + (parseFloat(document.getElementById('t2_m2').value)||0); 
@@ -268,10 +268,9 @@
             document.getElementById('total_hp8k_disp').innerText = hp8k.toFixed(1) + " / 30";
         };
 
-        // --- PENSYARAH LOGIC ---
+        // --- LECTURER LOGIC ---
         async function loginLecturer(e) {
-            e.preventDefault();
-            showLoader(true);
+            e.preventDefault(); showLoader(true);
             try {
                 const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_lecturer", email:document.getElementById('login-email').value, password:document.getElementById('login-pass').value})});
                 const res = await r.json();
@@ -294,8 +293,8 @@
         function showLecSection(s) {
             document.getElementById('sec-entry').classList.toggle('hidden', s!=='entry');
             document.getElementById('sec-summary').classList.toggle('hidden', s!=='summary');
-            document.getElementById('btn-sec-entry').className = s==='entry'?"px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition":"px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition";
-            document.getElementById('btn-sec-summary').className = s==='summary'?"px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition":"px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition";
+            document.getElementById('btn-sec-entry').className = s==='entry'?"px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition uppercase":"px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition uppercase";
+            document.getElementById('btn-sec-summary').className = s==='summary'?"px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs shadow-lg transition uppercase":"px-6 py-2 bg-white text-gray-400 border rounded-xl font-bold text-xs shadow transition uppercase";
         }
 
         async function loadSummaryData() {
@@ -305,20 +304,12 @@
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_summary_data", kelas: k})});
             const res = await r.json();
             showLoader(false);
-
             document.getElementById('stat-mean').innerText = res.stats.mean;
             document.getElementById('stat-std').innerText = res.stats.stdDev;
             const body = document.getElementById('summary-body');
             body.innerHTML = "";
             res.data.forEach(d => {
-                body.innerHTML += `<tr>
-                    <td class="text-left font-bold text-indigo-900 px-4 uppercase">${d.nama}</td>
-                    <td class="bg-indigo-50/30 font-black text-indigo-700">${d.kuiz}</td>
-                    <td>${d.hp4}</td><td>${d.hp5}</td>
-                    <td>${d.hp3}</td><td>${d.hp8i}</td><td>${d.hp8k}</td>
-                    <td class="bg-slate-900 text-white font-black text-sm">${d.total}</td>
-                    <td class="font-black text-indigo-600 bg-gray-50">${d.gred}</td>
-                </tr>`;
+                body.innerHTML += `<tr><td class="text-left font-bold text-indigo-900 px-4 uppercase">${d.nama}</td><td class="bg-indigo-50/30 font-black text-indigo-700">${d.kuiz}</td><td>${d.hp4}</td><td>${d.hp5}</td><td>${d.hp3}</td><td>${d.hp8i}</td><td>${d.hp8k}</td><td class="bg-slate-900 text-white font-black text-sm">${d.total}</td><td class="font-black text-indigo-600 bg-gray-50">${d.gred}</td></tr>`;
             });
         }
 
@@ -328,28 +319,20 @@
             showLoader(true);
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"get_student_marks", student_id:id})});
             const res = await r.json();
-            
-            const student = allStudentsCache.find(x => x.id == id);
+            const s = allStudentsCache.find(x => x.id == id);
             const img = document.getElementById('lec-view-img'), ph = document.getElementById('img-placeholder');
-            if(student.url_gambar) { img.src=student.url_gambar; img.classList.remove('hidden'); ph.classList.add('hidden'); } 
-            else { img.classList.add('hidden'); ph.classList.remove('hidden'); }
-
-            document.getElementById('t1_m1').value = res.marks.t1.m1;
-            document.getElementById('t1_m2').value = res.marks.t1.m2;
-            document.getElementById('t2_m1').value = res.marks.t2.m1;
-            document.getElementById('t2_m2').value = res.marks.t2.m2;
-            document.getElementById('t2_m3').value = res.marks.t2.m3;
+            if(s.url_gambar) { img.src=s.url_gambar; img.classList.remove('hidden'); ph.classList.add('hidden'); } else { img.classList.add('hidden'); ph.classList.remove('hidden'); }
+            document.getElementById('t1_m1').value = res.marks.t1.m1; document.getElementById('t1_m2').value = res.marks.t1.m2;
+            document.getElementById('t2_m1').value = res.marks.t2.m1; document.getElementById('t2_m2').value = res.marks.t2.m2; document.getElementById('t2_m3').value = res.marks.t2.m3;
             for(let i=1; i<=5; i++) document.getElementById(`t3_hp3_${i}`).value = res.marks.t3.hp3[i-1];
             for(let i=1; i<=3; i++) document.getElementById(`t3_hp8_${i}`).value = res.marks.t3.hp8i[i-1];
             for(let i=4; i<=7; i++) document.getElementById(`t3_hp8_${i}`).value = res.marks.t3.hp8k[i-4];
-
             calcT1(); calcT2(); calcT3();
             document.getElementById('grading-area').classList.remove('hidden');
             renderSpiderGraph(res.peerAverages);
             showLoader(false);
         }
 
-        // --- COMMON LOGIC ---
         function filterStudents() {
             const c = document.getElementById('sel-class').value;
             const sel = document.getElementById('sel-student');
@@ -369,8 +352,7 @@
             showLoader(true);
             const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify(p)});
             const res = await r.json();
-            showLoader(false);
-            alert(res.message);
+            showLoader(false); alert(res.message);
         }
 
         function renderSpiderGraph(dataPoints) {
@@ -378,15 +360,12 @@
             if(spiderChartInstance) spiderChartInstance.destroy();
             spiderChartInstance = new Chart(ctx, {
                 type: 'radar',
-                data: {
-                    labels: ['Kepimpinan', 'Kerjasama', 'Komunikasi', 'Komitmen', 'Sahsiah'],
-                    datasets: [{ label: 'Purata', data: dataPoints, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: '#4f46e5', borderWidth: 3, pointBackgroundColor: '#4f46e5' }]
-                },
+                data: { labels: ['Kepimpinan', 'Kerjasama', 'Komunikasi', 'Komitmen', 'Sahsiah'], datasets: [{ label: 'Purata', data: dataPoints, backgroundColor: 'rgba(79, 70, 229, 0.2)', borderColor: '#4f46e5', borderWidth: 3, pointBackgroundColor: '#4f46e5' }] },
                 options: { scales: { r: { min: 0, max: 5, ticks: { display: false }, grid: { color: '#e2e8f0' } } }, plugins: { legend: { display: false } } }
             });
         }
 
-        // --- STUDENT FUNCTIONS ---
+        // --- STUDENT LOGIC ---
         async function loginStudent(e) { e.preventDefault(); showLoader(true); const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"login_student", no_kp:document.getElementById('login-ic').value})}); const res = await r.json(); showLoader(false); if(res.result==='success') { currentStudent=res.data; initStudentDashboard(); } else alert(res.message); }
         function initStudentDashboard() {
             document.getElementById('view-login').classList.add('hidden');
@@ -410,9 +389,20 @@
             teammates.forEach(t => sel.innerHTML += `<option value="${t.id}">${t.nama}</option>`);
         }
         async function updateStudentData() { showLoader(true); const p = { action: "update_student_info", no_kp: currentStudent.no_kp, siri: document.getElementById('std-siri').value, kumpulan: document.getElementById('std-kumpulan').value, alahan: document.getElementById('std-alahan').value, ubat: document.getElementById('std-ubat').value, tel_kecemasan: document.getElementById('std-tel').value }; if(pendingImage) p.image_base64 = pendingImage; const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify(p)}); const res = await r.json(); showLoader(false); alert(res.message); location.reload(); }
-        async function submitPeerReview() { const t = document.getElementById('sel-peer-target').value; const m = [1,2,3,4,5].map(i => document.getElementById(`p_m${i}`).value); if(!t || m.includes("")) return alert("Lengkapkan markah."); if(!confirm("Hantar penilaian? Tindakan ini SEKALI SAHAJA.")) return; showLoader(true); const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"submit_peer_review", reviewer_id:currentStudent.id, target_id:t, siri:currentStudent.siri, kumpulan:currentStudent.kumpulan, m1:m[0], m2:m[1], m3:m[2], m4:m[3], m5:m[4]})}); const res = await r.json(); showLoader(false); alert(res.message); location.reload(); }
+        
+        async function submitPeerReview() {
+            const t = document.getElementById('sel-peer-target').value;
+            const m = [1,2,3,4,5].map(i => document.getElementById(`p_m${i}`).value);
+            if(!t || m.includes("")) return alert("Sila lengkapkan semua markah.");
+            for(let val of m) { if(parseFloat(val) < 1 || parseFloat(val) > 5) return alert("Ralat: Skala mestilah antara 1 hingga 5 sahaja."); }
+            if(!confirm("Hantar penilaian ini? Tindakan ini SEKALI SAHAJA.")) return;
+            showLoader(true);
+            const r = await fetch(WEB_APP_URL, {method:"POST", body:JSON.stringify({action:"submit_peer_review", reviewer_id:currentStudent.id, target_id:t, siri:currentStudent.siri, kumpulan:currentStudent.kumpulan, m1:m[0], m2:m[1], m3:m[2], m4:m[3], m5:m[4]})});
+            const res = await r.json();
+            showLoader(false); alert(res.message); location.reload();
+        }
         function handleFiles(f) { if(!f.length) return; const r = new FileReader(); r.onload = e => { document.getElementById('std-img').src = e.target.result; document.getElementById('std-img').classList.remove('hidden'); pendingImage = e.target.result; }; r.readAsDataURL(f[0]); }
-        function switchStudentTab(t) { document.getElementById('pane-profile').classList.toggle('hidden', t!=='profile'); document.getElementById('pane-peer').classList.toggle('hidden', t!=='peer'); document.getElementById('btn-tab-profile').className = t==='profile'?"flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg":"flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500 shadow"; document.getElementById('btn-tab-peer').className = t==='peer'?"flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg":"flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500 shadow"; }
+        function switchStudentTab(t) { document.getElementById('pane-profile').classList.toggle('hidden', t!=='profile'); document.getElementById('pane-peer').classList.toggle('hidden', t!=='peer'); document.getElementById('btn-tab-profile').className = t==='profile'?"flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg transition":"flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500 transition"; document.getElementById('btn-tab-peer').className = t==='peer'?"flex-1 py-4 rounded-2xl font-bold text-xs bg-indigo-600 text-white shadow-lg transition":"flex-1 py-4 rounded-2xl font-bold text-xs bg-gray-100 text-gray-500 transition"; }
         function switchMarkTab(t) { document.querySelectorAll('.mark-form').forEach(f => f.classList.add('hidden')); document.getElementById('form-'+t).classList.remove('hidden'); ['t1','t2','t3'].forEach(x => { document.getElementById('tab-mark-'+x).className = x===t ? "flex-1 py-3 rounded-xl font-bold text-[10px] border transition tab-active uppercase" : "flex-1 py-3 rounded-xl font-bold text-[10px] border transition tab-inactive uppercase"; }); }
     </script>
 </body>
